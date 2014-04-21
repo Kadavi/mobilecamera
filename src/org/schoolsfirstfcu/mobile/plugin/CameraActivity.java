@@ -17,6 +17,7 @@ import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,11 +44,11 @@ public class CameraActivity extends Activity {
     private static final String TAG = CameraActivity.class.getSimpleName();
     private static final float ASPECT_RATIO = 126.0f / 86;
 
-    public static String FILENAME = "Filename";
+    public static String TITLE = "Title";
     public static String QUALITY = "Quality";
     public static String TARGET_WIDTH = "TargetWidth";
     public static String TARGET_HEIGHT = "TargetHeight";
-    public static String IMAGE_URI = "ImageUri";
+    public static String IMAGE_DATA = "ImageData";
     public static String ERROR_MESSAGE = "ErrorMessage";
     public static int RESULT_ERROR = 2;
 
@@ -111,12 +112,12 @@ public class CameraActivity extends Activity {
         layout = new RelativeLayout(this);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         layout.setLayoutParams(layoutParams);
-        createCameraPreview();
-        createTopLeftBorder();
-        createTopRightBorder();
-        createBottomLeftBorder();
-        createBottomRightBorder();
-        layoutBottomBorderImagesRespectingAspectRatio();
+        //createCameraPreview();
+        //createTopLeftBorder();
+        //createTopRightBorder();
+        //createBottomLeftBorder();
+        //createBottomRightBorder();
+        //layoutBottomBorderImagesRespectingAspectRatio();
         createCaptureButton();
         setContentView(layout);
     }
@@ -291,14 +292,19 @@ public class CameraActivity extends Activity {
         @Override
         protected Void doInBackground(byte[]... jpegData) {
             try {
-                String filename = getIntent().getStringExtra(FILENAME);
+                /*String filename = getIntent().getStringExtra(FILENAME);
                 int quality = getIntent().getIntExtra(QUALITY, 80);
                 File capturedImageFile = new File(getCacheDir(), filename);
                 Bitmap capturedImage = getScaledBitmap(jpegData[0]);
                 capturedImage = correctCaptureImageOrientation(capturedImage);
-                capturedImage.compress(CompressFormat.JPEG, quality, new FileOutputStream(capturedImageFile));
+                capturedImage.compress(CompressFormat.JPEG, quality, new FileOutputStream(capturedImageFile));*/
+            	
+            	String imageData = Base64.encodeToString(jpegData[0], Base64.DEFAULT);
+            	
                 Intent data = new Intent();
-                data.putExtra(IMAGE_URI, Uri.fromFile(capturedImageFile).toString());
+                data.putExtra(IMAGE_DATA, imageData);
+                
+            	
                 setResult(RESULT_OK, data);
                 finish();
             } catch (Exception e) {

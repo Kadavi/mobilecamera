@@ -11,8 +11,8 @@ import org.apache.cordova.CordovaPlugin;
 import org.json.JSONException;
 
 import static org.schoolsfirstfcu.mobile.plugin.CameraActivity.ERROR_MESSAGE;
-import static org.schoolsfirstfcu.mobile.plugin.CameraActivity.FILENAME;
-import static org.schoolsfirstfcu.mobile.plugin.CameraActivity.IMAGE_URI;
+import static org.schoolsfirstfcu.mobile.plugin.CameraActivity.TITLE;
+import static org.schoolsfirstfcu.mobile.plugin.CameraActivity.IMAGE_DATA;
 import static org.schoolsfirstfcu.mobile.plugin.CameraActivity.QUALITY;
 import static org.schoolsfirstfcu.mobile.plugin.CameraActivity.RESULT_ERROR;
 import static org.schoolsfirstfcu.mobile.plugin.CameraActivity.TARGET_HEIGHT;
@@ -32,7 +32,7 @@ public class Camera extends CordovaPlugin {
 	    this.callbackContext = callbackContext;
 	    Context context = cordova.getActivity().getApplicationContext();
 	    Intent intent = new Intent(context, CameraActivity.class);
-	    intent.putExtra(FILENAME, args.getString(0));
+	    intent.putExtra(TITLE, args.getString(0));
 	    intent.putExtra(QUALITY, args.getInt(1));
 	    intent.putExtra(TARGET_WIDTH, args.getInt(2));
 	    intent.putExtra(TARGET_HEIGHT, args.getInt(3));
@@ -48,7 +48,7 @@ public class Camera extends CordovaPlugin {
 	@Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 	    if (resultCode == Activity.RESULT_OK) {
-	        callbackContext.success(intent.getExtras().getString(IMAGE_URI));
+	        callbackContext.success(intent.getExtras().getString(IMAGE_DATA));
 	    } else if (resultCode == RESULT_ERROR) {
 	        String errorMessage = intent.getExtras().getString(ERROR_MESSAGE);
 	        if (errorMessage != null) {
